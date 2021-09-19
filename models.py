@@ -77,3 +77,57 @@ class Favorites(db.Model):
         'category': self.category,
         'favorite_name':self.favorite_name
         }
+
+class Character(db.Model):
+    __tablename__ = 'character'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(30), nullable=False)
+    height = db.Column(db.Integer, nullable=False)
+    birth_year = db.Column(db.String(30), nullable=False)
+    gender = db.Column(db.String(30), nullable=False)
+
+    def __repr__(self):
+        return "<Character %r>" % self.id
+
+    def serialize(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'height':self.height,
+            'birth_year':self.birth_year,
+            'gender':self.gender,
+        }
+    def serialize_just_character(self)
+        return {
+        'id': self.id,
+        'name': self.name,
+        'birth_year':self.birth_year,
+        }    
+
+class Planet(db.Model):
+    __tablename__ = 'planet'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(30), nullable=False)
+    diameter = db.Column(db.Integer, nullable=False)
+    climate = db.Column(db.String(30), nullable=False)
+    terrain = db.Column(db.String(30), nullable=False)
+    population = db.Column(db.String(30), nullable=False)
+
+    def __repr__(self):
+        return "<Planet %r>" % self.id
+    
+    def serialize(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'diameter':self.diameter,
+            'climate':self.climate,
+            'terrain':self.terrain,
+            'population':self.population,
+        }
+    def serialize_just_planet(self)
+        return {
+        'id': self.id,
+        'name': self.name,
+        'diameter':self.diameter,
+        }  
