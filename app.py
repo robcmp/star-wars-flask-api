@@ -35,7 +35,6 @@ def user():
         user.lastname = request.json.get("lastname")
         user.password= request.json.get("password")
         user.email=request.json.get("email")
-        user.isActive=request.json.get("isActive")
         
         db.session.add(user)
         db.session.commit()
