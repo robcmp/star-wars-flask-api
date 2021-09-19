@@ -1,7 +1,7 @@
 import os 
 from flask import Flask,jsonify,request
 from flask_sqlalchemy import SQLAlchemy
-from models import db,User,Vehicles
+from models import db,User,Vehicles,Characters,Planets
 from flask_migrate import Migrate
 #from flask_script import Manager
 
@@ -63,46 +63,46 @@ def vehicles():
 
     return jsonify(vehicles.serialize()),200
 
-@app.route("/character",methods=["POST","GET"])
-def character():
+@app.route("/characters",methods=["POST","GET"])
+def characters():
     if request.method == "GET":
-        character = Character.query.get(1)
-        if character is not None:
-            return jsonify(character.serialize())   
+        characters = Characters.query.get(1)
+        if characters is not None:
+            return jsonify(characters.serialize())   
     else:
-        character = Character()
+        characters = Characters()
         data = request.json.get("name")
-        character.name = request.json.get("name")
-        character.height = request.json.get("height")
-        character.birth_year = request.json.get("birth_year")
-        character.gender = request.json.get("gender")
+        characters.name = request.json.get("name")
+        characters.height = request.json.get("height")
+        characters.birth_year = request.json.get("birth_year")
+        characters.gender = request.json.get("gender")
         
-        db.session.add(character)
+        db.session.add(characters)
         db.session.commit()
     
 
-    return jsonify(character.serialize()),200
+    return jsonify(characters.serialize()),200
 
-@app.route("/planet",methods=["POST","GET"])
-def planet():
+@app.route("/planets",methods=["POST","GET"])
+def planets():
     if request.method == "GET":
-        planet = Planet.query.get(1)
-        if planet is not None:
-            return jsonify(planet.serialize())   
+        planets = Planets.query.get(1)
+        if planets is not None:
+            return jsonify(planets.serialize())   
     else:
-        planet = Planet()
+        planets = Planets()
         data = request.json.get("name")
-        planet.name = request.json.get("name")
-        planet.diameter = request.json.get("diameter")
-        planet.climate = request.json.get("climate")
-        planet.terrain = request.json.get("terrain")
-        planet.population = request.json.get("population")
+        planets.name = request.json.get("name")
+        planets.diameter = request.json.get("diameter")
+        planets.climate = request.json.get("climate")
+        planets.terrain = request.json.get("terrain")
+        planets.population = request.json.get("population")
         
-        db.session.add(planet)
+        db.session.add(planets)
         db.session.commit()
     
 
-    return jsonify(planet.serialize()),200
+    return jsonify(planets.serialize()),200
 
 
 if __name__ == "__main__":

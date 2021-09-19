@@ -78,56 +78,57 @@ class Favorites(db.Model):
         'favorite_name':self.favorite_name
         }
 
-class Character(db.Model):
-    __tablename__ = 'character'
+class Characters(db.Model):
+    __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(30), nullable=False)
-    height = db.Column(db.Integer, nullable=False)
-    birth_year = db.Column(db.String(30), nullable=False)
-    gender = db.Column(db.String(30), nullable=False)
+    height = db.Column(db.Integer)
+    birth_year = db.Column(db.String(30))
+    gender = db.Column(db.String(30))
 
     def __repr__(self):
-        return "<Character %r>" % self.id
+        return "<Characters %r>" % self.id
 
     def serialize(self):
         return {
-            'id':self.id,
-            'name':self.name,
-            'height':self.height,
-            'birth_year':self.birth_year,
-            'gender':self.gender,
+            'id': self.id,
+            'name': self.name,
+            'height': self.height,
+            'birth_year': self.birth_year,
+            'gender': self.gender,
         }
-    def serialize_just_character(self)
+
+    def serialize_just_character(self):
         return {
         'id': self.id,
         'name': self.name,
-        'birth_year':self.birth_year,
+        'gender':self.gender,
         }    
 
-class Planet(db.Model):
-    __tablename__ = 'planet'
+class Planets(db.Model):
+    __tablename__ = 'planets'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(30), nullable=False)
-    diameter = db.Column(db.Integer, nullable=False)
-    climate = db.Column(db.String(30), nullable=False)
-    terrain = db.Column(db.String(30), nullable=False)
-    population = db.Column(db.String(30), nullable=False)
+    diameter = db.Column(db.Integer)
+    climate = db.Column(db.String(30))
+    terrain = db.Column(db.String(30))
+    population = db.Column(db.String(30))
 
     def __repr__(self):
-        return "<Planet %r>" % self.id
+        return "<Planets %r>" % self.id
     
     def serialize(self):
         return {
-            'id':self.id,
-            'name':self.name,
-            'diameter':self.diameter,
-            'climate':self.climate,
-            'terrain':self.terrain,
-            'population':self.population,
+            'id': self.id,
+            'name': self.name,
+            'diameter': self.diameter,
+            'climate': self.climate,
+            'terrain': self.terrain,
+            'population': self.population,
         }
-    def serialize_just_planet(self)
+    def serialize_just_planet(self):
         return {
         'id': self.id,
         'name': self.name,
-        'diameter':self.diameter,
+        'terrain': self.terrain,
         }  
