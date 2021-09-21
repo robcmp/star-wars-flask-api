@@ -1,8 +1,9 @@
 import os 
 from flask import Flask,jsonify,request
 from flask_sqlalchemy import SQLAlchemy
-from models import db,User,Vehicles,Characters,Planets
+from models import db,User,Vehicles,Characters,Planets,Favorites
 from flask_migrate import Migrate
+import flask_excel as excel
 #from flask_script import Manager
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -22,10 +23,25 @@ db.init_app(app)
 def home():
     return jsonify('Hola Mundo')
     
+@app.route("/upload", methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        return jsonify({"result": request.get_array(field_name='file')})
+    return '''
+    <!doctype html>
+    <title>Upload an excel file</title>
+    <h1>Excel file upload (csv, tsv, csvz, tsvz only)</h1>
+    <form action="" method=post enctype=multipart/form-data><p>
+    <input type=file name=file><input type=submit value=Upload>
+    </form>
+    '''
+    
 @app.route("/user",methods=["POST","GET"])
 def user():
     if request.method == "GET":
-        user = User.query.get(1)
+        user = User.query.all()
+        user = list(map(lambda x: x.serialize(), user))
+        return jsonify(user)
         if user is not None:
             return jsonify(user.serialize())   
     else:
@@ -66,7 +82,9 @@ def vehicles():
 @app.route("/characters",methods=["POST","GET"])
 def characters():
     if request.method == "GET":
-        characters = Characters.query.get(1)
+        characters = Characters.query.all()
+        characters = list(map(lambda x: x.serialize(), characters))
+        return jsonify(characters)
         if characters is not None:
             return jsonify(characters.serialize())   
     else:
@@ -104,6 +122,25 @@ def planets():
 
     return jsonify(planets.serialize()),200
 
+@app.route("/favorites",methods=["POST","GET"])
+def favorites():
+    if request.method == "GET":
+        favorites = Favorites.query.all()
+        favorites = list(map(lambda x: x.serialize(), favorites))
+        return jsonify(favorites)
+        if favorites is not None:
+            return jsonify(favorites.serialize())   
+    else:
+        favorites = Favorites()
+        data = request.json.get("favorite_name")
+        favorites.category=request.json.get("category")
+        favorites.favorite_name=request.json.get("favorite_name")
+        favorites.user_id=request.json.get("user_id")
+        db.session.add(favorites)
+        db.session.commit()
+    
+
+    return jsonify(favorites.serialize()),200
 
 if __name__ == "__main__":
     app.run(host='localhost',port=8080)
