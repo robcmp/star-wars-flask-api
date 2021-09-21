@@ -36,6 +36,8 @@ class Vehicles(db.Model):
     manufacturer = db.Column(db.String(50))
     passengers = db.Column(db.String(30))
     vehicle_class = db.Column(db.String(50))
+    favorite = db.relationship("Favorites",lazy=True)
+    favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
         return "<Vehicles %r>" % self.id
@@ -61,6 +63,8 @@ class Favorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(30))
     favorite_name = db.Column(db.String(50))
+    user = db.relationship("User",backref=db.backref('user',lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return "<Favorites %r>" % self.id
@@ -69,7 +73,8 @@ class Favorites(db.Model):
         return {
             'id':self.id,
             'category':self.category,
-            'favorite_name':self.favorite_name
+            'favorite_name':self.favorite_name,
+            'user_id':self.user_id
         }
     def serialize_just_favorites(self):
         return {
@@ -85,6 +90,8 @@ class Characters(db.Model):
     height = db.Column(db.Integer)
     birth_year = db.Column(db.String(30))
     gender = db.Column(db.String(30))
+    favorite = db.relationship('Favorites',lazy=True)
+    favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
         return "<Characters %r>" % self.id
@@ -113,6 +120,8 @@ class Planets(db.Model):
     climate = db.Column(db.String(30))
     terrain = db.Column(db.String(30))
     population = db.Column(db.String(30))
+    favorite = db.relationship("Favorites",lazy=True)
+    favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
         return "<Planets %r>" % self.id
