@@ -1,7 +1,7 @@
 import os 
 from flask import Flask,jsonify,request
 from flask_sqlalchemy import SQLAlchemy
-from models import db,User,Vehicles,Characters,Planets,Favorites
+from models import db,User,Vehicle,Character,Planet,Favorite
 from flask_migrate import Migrate
 import flask_excel as excel
 #from flask_script import Manager
@@ -61,11 +61,11 @@ def user():
 @app.route("/vehicles",methods=["POST","GET"])
 def vehicles():
     if request.method == "GET":
-        vehicles = Vehicles.query.get(1)
+        vehicles = Vehicle.query.get(1)
         if vehicles is not None:
             return jsonify(vehicles.serialize())   
     else:
-        vehicles = Vehicles()
+        vehicles = Vehicle()
         data = request.json.get("name")
         vehicles.name = request.json.get("name")
         vehicles.model = request.json.get("model")
@@ -82,13 +82,13 @@ def vehicles():
 @app.route("/characters",methods=["POST","GET"])
 def characters():
     if request.method == "GET":
-        characters = Characters.query.all()
+        characters = Character.query.all()
         characters = list(map(lambda x: x.serialize(), characters))
         return jsonify(characters)
         if characters is not None:
             return jsonify(characters.serialize())   
     else:
-        characters = Characters()
+        characters = Character()
         data = request.json.get("name")
         characters.name = request.json.get("name")
         characters.height = request.json.get("height")
@@ -104,11 +104,11 @@ def characters():
 @app.route("/planets",methods=["POST","GET"])
 def planets():
     if request.method == "GET":
-        planets = Planets.query.get(1)
+        planets = Planet.query.get(1)
         if planets is not None:
             return jsonify(planets.serialize())   
     else:
-        planets = Planets()
+        planets = Planet()
         data = request.json.get("name")
         planets.name = request.json.get("name")
         planets.diameter = request.json.get("diameter")
@@ -125,13 +125,13 @@ def planets():
 @app.route("/favorites",methods=["POST","GET"])
 def favorites():
     if request.method == "GET":
-        favorites = Favorites.query.all()
+        favorites = Favorite.query.all()
         favorites = list(map(lambda x: x.serialize(), favorites))
         return jsonify(favorites)
         if favorites is not None:
             return jsonify(favorites.serialize())   
     else:
-        favorites = Favorites()
+        favorites = Favorite()
         data = request.json.get("favorite_name")
         favorites.category=request.json.get("category")
         favorites.favorite_name=request.json.get("favorite_name")
@@ -141,6 +141,17 @@ def favorites():
     
 
     return jsonify(favorites.serialize()),200
+
+
+@app.route("/favorites/<int:id>",methods=["POST","GET"])
+def favorite_list(id):
+    if request.method == "GET":
+        if id is not None:
+            favorites = Favorite.query.get(id)
+            return jsonify(favorites.serialize())
+        else:
+            return jsonify('Missing id for route'),404   
+    
 
 if __name__ == "__main__":
     app.run(host='localhost',port=8080)
