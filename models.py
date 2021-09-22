@@ -28,7 +28,7 @@ class User(db.Model):
         'lastname':self.lastname
         }
 
-class Vehicles(db.Model):
+class Vehicle(db.Model):
     __tablename__ = 'vehicles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
@@ -36,7 +36,7 @@ class Vehicles(db.Model):
     manufacturer = db.Column(db.String(50))
     passengers = db.Column(db.String(30))
     vehicle_class = db.Column(db.String(50))
-    favorite = db.relationship("Favorites",lazy=True)
+    favorite = db.relationship("Favorite",lazy=True)
     favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
@@ -58,7 +58,7 @@ class Vehicles(db.Model):
         'model':self.model
         }
 
-class Favorites(db.Model):
+class Favorite(db.Model):
     __tablename__ = 'favorites'
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(30))
@@ -83,14 +83,14 @@ class Favorites(db.Model):
         'favorite_name':self.favorite_name
         }
 
-class Characters(db.Model):
+class Character(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(30), nullable=False)
     height = db.Column(db.Integer)
     birth_year = db.Column(db.String(30))
     gender = db.Column(db.String(30))
-    favorite = db.relationship('Favorites',lazy=True)
+    favorite = db.relationship('Favorite',lazy=True)
     favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
@@ -112,7 +112,7 @@ class Characters(db.Model):
         'gender':self.gender,
         }    
 
-class Planets(db.Model):
+class Planet(db.Model):
     __tablename__ = 'planets'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(30), nullable=False)
@@ -120,7 +120,7 @@ class Planets(db.Model):
     climate = db.Column(db.String(30))
     terrain = db.Column(db.String(30))
     population = db.Column(db.String(30))
-    favorite = db.relationship("Favorites",lazy=True)
+    favorite = db.relationship("Favorite",lazy=True)
     favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     def __repr__(self):
